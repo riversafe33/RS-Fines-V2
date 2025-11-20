@@ -44,3 +44,5 @@ https://ko-fi.com/riversafe33
 <img width="573" height="779" alt="image" src="https://github.com/user-attachments/assets/3f1d4f3a-9db5-4c70-9596-e8f44beea2f6" />
 
 <img width="487" height="394" alt="image" src="https://github.com/user-attachments/assets/58e44c22-886b-4519-addd-bd9a144bf2bc" />
+
+<img width="900" height="430" alt="image" src="https://github.com/user-attachments/assets/ef1e7fbb-85f5-42b3-b4dc-f10ca71d5614" />
