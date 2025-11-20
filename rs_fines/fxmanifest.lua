@@ -2,7 +2,7 @@ fx_version "adamant"
 game "rdr3"
 rdr3_warning "I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships."
 author 'riversafe'
-version '1.0'
+version '2.0'
 
 client_scripts {
 	"client/client.lua",
@@ -13,7 +13,6 @@ shared_scripts {
 }
 
 server_scripts {
-	'@oxmysql/lib/MySQL.lua',
 	'server/server.lua'
 }
 
@@ -22,5 +21,3 @@ ui_page 'html/html.html'
 files {
     'html/html.html',
 }
-
-
