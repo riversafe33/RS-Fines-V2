@@ -76,10 +76,22 @@ RegisterNUICallback("eliminarMulta", function(data, cb)
     cb({})
 end)
 
-RegisterNUICallback("eliminarMulta", function(data, cb)
-    local id = data.id
-    TriggerServerEvent("rs_fines:eliminarMulta", id)
-    cb({ status = "ok" })
+RegisterNUICallback("eliminarMultaPendiente", function(data, cb)
+    local id = tonumber(data.id)
+    TriggerServerEvent("rs_police:eliminarMultaPendiente", id)
+    cb({})
+end)
+
+RegisterNetEvent("rs_police:multaPendienteEliminada")
+AddEventHandler("rs_police:multaPendienteEliminada", function(multas)
+
+    SendNUIMessage({
+        action = "actualizarMultas",
+        multas = multas,
+        textos = Config.Textos
+    })
+
+    VORPcore.NotifyLeft( Config.Textos.Notify.collect, Config.Textos.Notify.multaEliminada, "toasts_mp_generic", "toast_mp_customer_service", 4000, "COLOR_GREEN" )
 end)
 
 RegisterNetEvent("rs_fines:multaEliminada")
