@@ -12,7 +12,7 @@ https://ko-fi.com/riversafe33
 
 # rs_fines V2
 
-1 - Item to create the fine or invoice
+1 - Item to create the fine
 
 2 - Point by coordinates on the map where the player can pay the fine
 
