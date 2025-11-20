@@ -8,7 +8,7 @@ Thank you for your support! ❤️
 
 https://ko-fi.com/riversafe33
 
-# ----------------------------------------------------------------- #
+# ---------------------------------------------------------------- #
 
 # rs_fines V2
 
@@ -36,7 +36,7 @@ https://ko-fi.com/riversafe33
 
 # If you use rs_police V2, you don’t need to install this script as it is already integrated.
 
-# ------------------------------------------------------------------ #
+# ---------------------------------------------------------------- #
 
 
 <img width="598" height="785" alt="image" src="https://github.com/user-attachments/assets/38cb30f6-928a-421d-9b9d-2013a418f780" />
