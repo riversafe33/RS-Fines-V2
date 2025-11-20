@@ -14,7 +14,7 @@ rs_fines V2
 
 1 - The option to attach a photo of the fined/detained player to the fine has been added.
 
-2 -A feature has been added so that only certain ranks, besides collecting the money, can delete pending fines in case that player leaves the server.
+2 - A feature has been added so that only certain ranks, besides collecting the money, can delete pending fines in case that player leaves the server.
 
 3 - The notebook animation has been added to make it more immersive.
 
