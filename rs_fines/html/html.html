@@ -321,6 +321,7 @@
       if (data.type === 'hideprompt') {
         prompt.style.display = 'none';
       }
+      
     });
 
     function renderMultas(todasLasMultas) {
@@ -438,16 +439,11 @@
     }
 
     function eliminarMultaPendiente(id) {
-      fetch(`https://${GetParentResourceName()}/eliminarMulta`, {
+      fetch(`https://${GetParentResourceName()}/eliminarMultaPendiente`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
       });
-
-      const multaElemento = document.querySelector(`.itemMulta[data-id="${id}"]`);
-      if (multaElemento) {
-        multaElemento.remove();
-      }
     }
   </script>
 </body>
