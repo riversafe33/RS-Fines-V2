@@ -1,6 +1,7 @@
 local VORPcore = exports.vorp_core:GetCore()
 local VorpInv = exports.vorp_inventory:vorp_inventoryApi()
 local ultimoSheriff = nil
+local onlyOwn = false
 
 Citizen.CreateThread(function()
     Wait(200)
@@ -51,7 +52,7 @@ AddEventHandler("rs_fines:guardarMulta", function(data)
     local idMultado = targetChar.charIdentifier
     local targetSrc = targetUser.source
 
-    MySQL.insert('INSERT INTO multas (nombre, apellido, id_multado, motivo, autor, monto, pagada, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
+    exports.oxmysql:insert('INSERT INTO multas (nombre, apellido, id_multado, motivo, autor, monto, pagada, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
         data.nombre,
         data.apellido,
         idMultado,
@@ -73,7 +74,7 @@ AddEventHandler("rs_fines:abrirMenuPago", function()
     local Character = VORPcore.getUser(src).getUsedCharacter
     local id = Character.charIdentifier
 
-    MySQL.query('SELECT * FROM multas WHERE id_multado = ? AND pagada = 0', { id }, function(result)
+    exports.oxmysql:query('SELECT * FROM multas WHERE id_multado = ? AND pagada = 0', { id }, function(result)
         if #result > 0 then
             local elementos = {}
             for _, multa in ipairs(result) do
@@ -95,14 +96,14 @@ AddEventHandler("rs_fines:pagarMulta", function(multaId)
     local src = source
     local Character = VORPcore.getUser(src).getUsedCharacter
 
-    MySQL.query('SELECT * FROM multas WHERE id = ?', { multaId }, function(result)
+    exports.oxmysql:query('SELECT * FROM multas WHERE id = ?', { multaId }, function(result)
         if #result > 0 then
             local multa = result[1]
             local montoMulta = tonumber(string.format("%.2f", multa.monto))
 
             if Character.money >= montoMulta then
                 Character.removeCurrency(0, montoMulta)
-                MySQL.update('UPDATE multas SET pagada = 1 WHERE id = ?', { multaId })
+                exports.oxmysql:update('UPDATE multas SET pagada = 1 WHERE id = ?', { multaId })
 
                 VORPcore.NotifyLeft(src, Config.Textos.Notify.collect, Config.Textos.Notify.corectpay, "toasts_mp_generic", "toast_mp_customer_service", 5000, "COLOR_GREEN")
             else
@@ -138,7 +139,7 @@ RegisterCommand(Config.Command, function(source)
 
     if canOpenPanel(job) then
         ultimoSheriff = source
-        MySQL.query('SELECT * FROM multas', {}, function(result)
+        exports.oxmysql:query('SELECT * FROM multas', {}, function(result)
             for _, multa in ipairs(result) do
                 multa.pagada = tonumber(multa.pagada)
             end
@@ -164,7 +165,7 @@ AddEventHandler("rs_fines:solicitarMultas", function()
         FROM multas
     ]]
 
-    MySQL.query(query, {}, function(result)
+    exports.oxmysql:query(query, {}, function(result)
         TriggerClientEvent("rs_fines:recibirMultas", src, result)
     end)
 end)
@@ -186,7 +187,7 @@ AddEventHandler("rs_fines:recolectarMultas", function()
 
     local query = 'SELECT * FROM multas WHERE pagada = 1 AND recolectada = 0'
 
-    MySQL.query(query, {}, function(result)
+    exports.oxmysql:query(query, {}, function(result)
         if not result or #result == 0 then
             VORPcore.NotifyLeft(src, Config.Textos.Notify.collect, Config.Textos.Notify.notfinetocollect, "toasts_mp_generic", "toast_mp_customer_service", 5000, "COLOR_BLUE")
             return
@@ -204,7 +205,7 @@ AddEventHandler("rs_fines:recolectarMultas", function()
             Character.addCurrency(0, total)
 
             for _, id in ipairs(idsToUpdate) do
-                MySQL.update('UPDATE multas SET recolectada = 1 WHERE id = ?', {id})
+                exports.oxmysql:update('UPDATE multas SET recolectada = 1 WHERE id = ?', {id})
             end
 
             VORPcore.NotifyLeft(src, Config.Textos.Notify.collect, Config.Textos.Notify.received .. total .. "$ " .. Config.Textos.Notify.amount, "toasts_mp_generic", "toast_mp_customer_service", 5000, "COLOR_GREEN")
@@ -212,9 +213,38 @@ AddEventHandler("rs_fines:recolectarMultas", function()
     end)
 end)
 
-RegisterServerEvent("rs_fines:eliminarMulta")
-AddEventHandler("rs_fines:eliminarMulta", function(id)
+RegisterServerEvent("rs_police:eliminarMultaPendiente")
+AddEventHandler("rs_police:eliminarMultaPendiente", function(id)
     local src = source
-    MySQL.execute('DELETE FROM multas WHERE id = ?', { id })
-    TriggerClientEvent("rs_fines:multaEliminada", src)
+    local User = VORPcore.getUser(src)
+    if not User then return end
+
+    local Character = User.getUsedCharacter
+    if not Character then return end
+
+    local job = Character.job
+    local grade = Character.jobGrade
+
+    if Config.jobRequiredCollect then
+        local jobConfig = Config.allowedJobsCollect[job]
+        if not jobConfig then return end
+
+        if jobConfig.minGrade ~= false and grade < jobConfig.minGrade then
+            VORPcore.NotifyLeft(src, Config.Textos.Notify.collect, Config.Textos.Notify.notrankpermis, "toasts_mp_generic", "toast_mp_customer_service", 4000, "COLOR_RED")
+            return
+        end
+    end
+
+    exports.oxmysql:execute('DELETE FROM multas WHERE id = ?', { id }, function()
+        local query = [[
+            SELECT 
+                id, nombre, apellido, id_multado, motivo, monto, autor, imagen,
+                CAST(pagada AS UNSIGNED) AS pagada,
+                CAST(recolectada AS UNSIGNED) AS recolectada
+            FROM multas
+        ]]
+        exports.oxmysql:query(query, {}, function(result)
+           TriggerClientEvent("rs_police:multaPendienteEliminada", src, result)
+        end)
+    end)
 end)
