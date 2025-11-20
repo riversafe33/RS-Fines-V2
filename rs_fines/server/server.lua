@@ -213,8 +213,15 @@ AddEventHandler("rs_fines:recolectarMultas", function()
     end)
 end)
 
-RegisterServerEvent("rs_police:eliminarMultaPendiente")
-AddEventHandler("rs_police:eliminarMultaPendiente", function(id)
+RegisterServerEvent("rs_fines:eliminarMulta")
+AddEventHandler("rs_fines:eliminarMulta", function(id)
+    local src = source
+    exports.oxmysql:execute('DELETE FROM multas WHERE id = ?', { id })
+    TriggerClientEvent("rs_police:multaEliminada", src)
+end)
+
+RegisterServerEvent("rs_fines:eliminarMultaPendiente")
+AddEventHandler("rs_fines:eliminarMultaPendiente", function(id)
     local src = source
     local User = VORPcore.getUser(src)
     if not User then return end
@@ -244,7 +251,7 @@ AddEventHandler("rs_police:eliminarMultaPendiente", function(id)
             FROM multas
         ]]
         exports.oxmysql:query(query, {}, function(result)
-           TriggerClientEvent("rs_police:multaPendienteEliminada", src, result)
+           TriggerClientEvent("rs_fines:multaPendienteEliminada", src, result)
         end)
     end)
 end)
