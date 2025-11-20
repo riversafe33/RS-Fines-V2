@@ -78,12 +78,12 @@ end)
 
 RegisterNUICallback("eliminarMultaPendiente", function(data, cb)
     local id = tonumber(data.id)
-    TriggerServerEvent("rs_police:eliminarMultaPendiente", id)
+    TriggerServerEvent("rs_fines:eliminarMultaPendiente", id)
     cb({})
 end)
 
-RegisterNetEvent("rs_police:multaPendienteEliminada")
-AddEventHandler("rs_police:multaPendienteEliminada", function(multas)
+RegisterNetEvent("rs_fines:multaPendienteEliminada")
+AddEventHandler("rs_fines:multaPendienteEliminada", function(multas)
 
     SendNUIMessage({
         action = "actualizarMultas",
