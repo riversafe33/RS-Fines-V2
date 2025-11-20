@@ -18,6 +18,8 @@ https://ko-fi.com/riversafe33
 
 3 - The notebook animation has been added to make it more immersive.
 
+# For images, I recommend using https://postimages.org/ since Discord links expire.
+
 # If you use rs_police V2, you don’t need to install this script as it is already integrated.
 
 # ------------------------------------------------------------------ #
