@@ -6,7 +6,6 @@ Config.Align = "top-right"  -- Align Menu Fines Pay Station
 
 Config.ItemName = "fine_book" 
 
-
 Config.jobRequiredItem = true 
 Config.allowedJobsItem = {
     sheriff = {minGrade = 3},    -- If minGrade is 3, only players with the police job grade 3 or higher can use the item.
@@ -15,12 +14,13 @@ Config.allowedJobsItem = {
 } -- You can remove or add as many as you want
 
 Config.Command = "collectfines" 
+
 Config.jobRequiredCollect = true 
 Config.allowedJobsCollect = {
-    sheriff = {minGrade = 3},    -- the job can use the collectfines command to view fines, but can only collect the money from paid fines if their grade is 3 or higher
-    lawmen  = {minGrade = 2},    -- the job can use the collectfines command to view fines, but can only collect the money from paid fines if their grade is 2 or higher
-    marshal = {minGrade = false} -- if minGrade = false, anyone with the job can open and collect paid fines
-} -- You can remove or add as many as you want
+    sheriff = {minGrade = 3},    -- This job can use Config.Command = "collectfines", but can only collect paid fines or delete pending fines if their grade is 3 or higher.
+    lawmen  = {minGrade = 2},    -- This job can use Config.Command = "collectfines", but can only collect paid fines or delete pending fines if their grade is 2 or higher.
+    marshal = {minGrade = false} -- If minGrade = false, anyone with this job can use Config.Command = "collectfines" and collect paid fines or delete pending fines regardless of grade.
+} -- You can remove or add as many jobs as you want.
 
 -- Payment locations on the map where fines can be paid.
 -- You can add as many as you want.
@@ -106,5 +106,6 @@ Config.Textos = {
         notpermistocollect = "You don't have permission to collect fines.",
         multaEliminada = "Fine successfully removed",
         recivefine =  "You have received a fine of",
+        notrankpermis = "You do not have the required rank to perform this action.",
     }
 }
