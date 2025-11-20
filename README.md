@@ -12,11 +12,25 @@ https://ko-fi.com/riversafe33
 
 # rs_fines V2
 
-1 - The option to attach a photo of the fined/detained player to the fine has been added.
+1 - Item to create the fine or invoice
 
-2 - A feature has been added so that only certain ranks, besides collecting the money, can delete pending fines in case that player leaves the server.
+2 - Point by coordinates on the map where the player can pay the fine
 
-3 - The notebook animation has been added to make it more immersive.
+3 - Blip and NPC creation within the same script
+
+4 - Command to open a NUI to collect the money from the paid fine
+
+5 - The same command is used to check which fines are paid or unpaid
+
+6 - Everything is controlled by job and grade
+
+7 - The option to attach a photo of the fined/detained player to the fine .
+
+8 - Only certain ranks, besides collecting the money, can delete pending fines in case that player leaves the server.
+
+9 - When you open the NUI, the NPC performs the animation as if they were writing in a book to make it more immersive.
+
+10 - Very low resource usage in menu, maximum 0.01 ms
 
 # For images, I recommend using https://postimages.org/ since Discord links expire.
 
