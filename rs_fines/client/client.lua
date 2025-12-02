@@ -112,7 +112,7 @@ AddEventHandler("rs_fines:mostrarMenuPago", function(multas)
     end
 
     Menu.Open("default", GetCurrentResourceName(), "menuPagoMultas", {
-        title = "Pending Fines",
+        title = Config.Textos.menutitle,
         align = Config.Align,
         elements = menuElements
     }, function(data, menu)
